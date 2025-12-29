@@ -1,0 +1,102 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f7f8fa;
+  color: #333;
+  padding: 2rem;
+  max-width: 600px;
+  margin: auto;
+}
+
+
+h1 {
+  text-align: center;
+  color: #444;
+  margin-bottom: 1.5rem;
+}
+
+
+#noteInput {
+  width: 70%;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+#noteInput:focus {
+  border-color: #007BFF;
+  box-shadow: 0 0 5px rgba(0,123,255,0.3);
+}
+
+#addBtn {
+  padding: 0.55rem 1rem;
+  font-size: 1rem;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+#addBtn:hover {
+  background-color: #0056b3;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.5rem;
+}
+
+li {
+  background-color: white;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.8rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.marked {
+  text-decoration: line-through;
+  color: #999;
+}
+
+li button {
+  padding: 0.3rem 0.6rem;
+  margin-left: 0.4rem;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+li button:first-of-type {
+  background-color: #28a745; 
+  color: white;
+}
+
+li button:first-of-type:hover {
+  background-color: #218838;
+}
+
+li button:last-of-type {
+  background-color: #dc3545;
+  color: white;
+}
+
+li button:last-of-type:hover {
+  background-color: #c82333;
+}
