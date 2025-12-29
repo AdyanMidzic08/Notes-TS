@@ -100,3 +100,38 @@ li button:last-of-type {
 li button:last-of-type:hover {
   background-color: #c82333;
 }
+
+@media (max-width: 598px) {
+  body {
+    padding: 1rem;
+  }
+
+  #noteInput {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    box-sizing: border-box;
+  }
+
+  #addBtn {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  li > span {
+    margin-bottom: 0.5rem;
+    width: 100%;
+    word-break: break-word;
+  }
+
+  li > div {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
