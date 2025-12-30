@@ -19,18 +19,21 @@ Eine einfache Notizen-App, entwickelt mit TypeScript, Express und einem Vanilla-
 ## 📦 Installation & Setup
 
 1. **Repository klonen**
+
    ```bash
    git clone <DEIN_REPO_URL>
    cd Notes-TS-API
    ```
 
 2. **Abhängigkeiten installieren**
+
    ```bash
    npm install
    ```
 
 3. **Entwicklungsserver starten**
    Startet den Server im Watch-Mode unter `http://localhost:3000`.
+
    ```bash
    npm run dev
    ```
@@ -43,11 +46,11 @@ Eine einfache Notizen-App, entwickelt mit TypeScript, Express und einem Vanilla-
 
 ## 📡 API Endpoints
 
-| Methode | Pfad | Beschreibung | Body (JSON) |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/notes` | Ruft alle gespeicherten Notizen ab. | - |
-| `POST` | `/notes` | Erstellt eine neue Notiz. | `{ "text": "Meine Notiz" }` |
-| `DELETE` | `/notes/:id` | Löscht eine Notiz anhand ihrer ID. | - |
+| Methode  | Pfad         | Beschreibung                        | Body (JSON)                 |
+| :------- | :----------- | :---------------------------------- | :-------------------------- |
+| `GET`    | `/notes`     | Ruft alle gespeicherten Notizen ab. | -                           |
+| `POST`   | `/notes`     | Erstellt eine neue Notiz.           | `{ "text": "Meine Notiz" }` |
+| `DELETE` | `/notes/:id` | Löscht eine Notiz anhand ihrer ID.  | -                           |
 
 ## 📂 Projektstruktur
 

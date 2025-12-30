@@ -5,14 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="./script.js" defer></script>
   </head>
   <body>
-    <h1>Notes App</h1>
+    <h1 id="header">Notes App</h1>
 
     <input type="text" id="noteInput" placeholder="Neue Notiz" />
     <button onclick="addNotes(document.getElementById('noteInput').value)" id="addBtn">Hinzufügen</button>
 
     <ul id="notesList"></ul>
+
+    <div id="light-dark-mode">  <i class="fa-solid fa-moon"></i>
+</div>
   </body>
 </html>

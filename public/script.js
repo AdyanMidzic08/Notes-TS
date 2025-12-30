@@ -38,6 +38,8 @@ var _this = this;
 var addBtn = document.getElementById("addBtn");
 var noteInput = document.getElementById("noteInput");
 var notesList = document.getElementById("notesList");
+var darkModeBtn = document.getElementById("light-dark-mode");
+var headline = document.getElementById("header");
 var markBtns = document.querySelectorAll(".mark-btn");
 var deleteBtns = document.querySelectorAll(".delete-btn");
 var url = "http://localhost:3000/notes";
@@ -146,6 +148,31 @@ noteInput.addEventListener("keyup", function (event) {
         addNotes(text);
         noteInput.value = "";
         showAllNotes();
+    }
+});
+darkModeBtn.addEventListener("click", function () {
+    var isDark = document.body.classList.toggle("dark-mode");
+    if (isDark) {
+        headline.style.color = "white";
+        notesList.style.color = "white";
+        noteInput.style.backgroundColor = "black";
+        noteInput.style.color = "white";
+        var items = notesList.querySelectorAll("li");
+        items.forEach(function (li) {
+            li.style.backgroundColor = "black";
+        });
+        darkModeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+    }
+    else {
+        notesList.style.color = "black";
+        headline.style.color = "black";
+        noteInput.style.backgroundColor = "white";
+        noteInput.style.color = "grey";
+        var items = notesList.querySelectorAll("li");
+        items.forEach(function (li) {
+            li.style.backgroundColor = "white";
+        });
+        darkModeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
     }
 });
 showAllNotes();
