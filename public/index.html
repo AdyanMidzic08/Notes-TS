@@ -5,18 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="./style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
     <script src="./script.js" defer></script>
   </head>
   <body>
     <h1 id="header">Notes App</h1>
 
-    <input type="text" id="noteInput" placeholder="Neue Notiz" />
-    <button onclick="addNotes(document.getElementById('noteInput').value)" id="addBtn">Hinzufügen</button>
+    <input type="text" id="noteInput" placeholder="Neue Headline" />
+    <button
+      onclick="addNotes(document.getElementById('noteInput').value)"
+      id="addBtn"
+    >
+      Hinzufügen
+    </button>
 
     <ul id="notesList"></ul>
+    <div id="light-dark-mode"><i class="fa-solid fa-moon"></i></div>
 
-    <div id="light-dark-mode">  <i class="fa-solid fa-moon"></i>
-</div>
+    <!-- Modal Structure -->
+    <div id="noteModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" id="closeModalBtn">&times;</span>
+        <h2>Note Details</h2>
+        <input
+          type="text"
+          id="modalHeadline"
+          placeholder="Headline"
+          readonly
+          style="
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+            font-size: 1.1rem;
+          "
+        />
+        <textarea id="modalNoteText" placeholder="Text" readonly></textarea>
+        <div class="modal-buttons">
+          <button id="editNoteBtn">Edit</button>
+          <button id="saveNoteBtn" style="display: none">Save</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

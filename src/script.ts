@@ -9,14 +9,14 @@ let deleteBtns = document.querySelectorAll(".delete-btn");
 
 const url: String = "http://localhost:3000/notes";
 
-async function addNotes(text: string) {
+async function addNotes(headline: string) {
   try {
     const response = await fetch("http://localhost:3000/notes", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({ headline }),
     });
 
     if (!response.ok) {
@@ -30,10 +30,10 @@ async function addNotes(text: string) {
 }
 
 addBtn.addEventListener("click", async () => {
-  const text = noteInput.value.trim();
-  if (!text) return;
+  const headline = noteInput.value.trim();
+  if (!headline) return;
 
-  await addNotes(text);
+  await addNotes(headline);
   noteInput.value = "";
   await showAllNotes();
 });
@@ -49,8 +49,9 @@ async function showAllNotes() {
       let note = notes[i];
       notesList.innerHTML += `
                 <li data-id="${note.id}">
-                    <span>${note.text}</span>
+                    <span>${note.headline}</span>
                     <div>
+                        <button onclick='openModal("${note.id}")' class="edit-btn" style="background-color: #ffc107; color: black;">Edit/Show</button>
                         <button onclick='deleteNote("${note.id}")' class="delete-btn">Delete</button>
                     </div>
                 </li>
@@ -70,10 +71,10 @@ async function deleteNote(id: String) {
 
 noteInput.addEventListener("keyup", function (event) {
   if (event.key == "Enter") {
-    const text = noteInput.value.trim();
-    if (!text) return;
+    const headline = noteInput.value.trim();
+    if (!headline) return;
 
-    addNotes(text);
+    addNotes(headline);
     noteInput.value = "";
     showAllNotes();
   }
@@ -95,7 +96,7 @@ darkModeBtn.addEventListener("click", function () {
       li.style.backgroundColor = "black";
     });
 
-     darkModeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+    darkModeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
   } else {
     notesList.style.color = "black";
     headline.style.color = "black";
@@ -112,5 +113,79 @@ darkModeBtn.addEventListener("click", function () {
     darkModeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
   }
 });
+
+let modal = document.getElementById("noteModal") as HTMLDivElement;
+let closeModalBtn = document.getElementById("closeModalBtn") as HTMLSpanElement;
+let modalHeadline = document.getElementById(
+  "modalHeadline"
+) as HTMLInputElement;
+let modalNoteText = document.getElementById(
+  "modalNoteText"
+) as HTMLTextAreaElement;
+let editNoteBtn = document.getElementById("editNoteBtn") as HTMLButtonElement;
+let saveNoteBtn = document.getElementById("saveNoteBtn") as HTMLButtonElement;
+let currentNoteId: string | null = null;
+
+(window as any).openModal = async function (id: string) {
+  currentNoteId = id;
+  try {
+    let response = await fetch(`${url}`);
+    let notes = await response.json();
+    let note = notes.find((n: any) => n.id === id);
+
+    if (note) {
+      modalHeadline.value = note.headline;
+      modalNoteText.value = note.text || "";
+      modal.style.display = "block";
+      modalHeadline.readOnly = true;
+      modalNoteText.readOnly = true;
+      editNoteBtn.style.display = "inline-block";
+      saveNoteBtn.style.display = "none";
+    }
+  } catch (error) {
+    console.error("Error fetching note details:", error);
+  }
+};
+
+closeModalBtn.onclick = function () {
+  modal.style.display = "none";
+};
+
+window.onclick = function (event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
+
+editNoteBtn.onclick = function () {
+  modalHeadline.readOnly = false;
+  modalNoteText.readOnly = false;
+  modalNoteText.focus();
+  editNoteBtn.style.display = "none";
+  saveNoteBtn.style.display = "inline-block";
+};
+
+saveNoteBtn.onclick = async function () {
+  if (currentNoteId) {
+    const newHeadline = modalHeadline.value.trim();
+    const newText = modalNoteText.value.trim();
+    if (!newHeadline) return;
+
+    try {
+      await fetch(`${url}/${currentNoteId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ headline: newHeadline, text: newText }),
+      });
+
+      modal.style.display = "none";
+      await showAllNotes();
+    } catch (error) {
+      console.error("Error updating note:", error);
+    }
+  }
+};
 
 showAllNotes();

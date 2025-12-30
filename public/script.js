@@ -43,7 +43,7 @@ var headline = document.getElementById("header");
 var markBtns = document.querySelectorAll(".mark-btn");
 var deleteBtns = document.querySelectorAll(".delete-btn");
 var url = "http://localhost:3000/notes";
-function addNotes(text) {
+function addNotes(headline) {
     return __awaiter(this, void 0, void 0, function () {
         var response, error, err_1;
         return __generator(this, function (_a) {
@@ -55,7 +55,7 @@ function addNotes(text) {
                             headers: {
                                 "Content-Type": "application/json",
                             },
-                            body: JSON.stringify({ text: text }),
+                            body: JSON.stringify({ headline: headline }),
                         })];
                 case 1:
                     response = _a.sent();
@@ -76,14 +76,14 @@ function addNotes(text) {
     });
 }
 addBtn.addEventListener("click", function () { return __awaiter(_this, void 0, void 0, function () {
-    var text;
+    var headline;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                text = noteInput.value.trim();
-                if (!text)
+                headline = noteInput.value.trim();
+                if (!headline)
                     return [2 /*return*/];
-                return [4 /*yield*/, addNotes(text)];
+                return [4 /*yield*/, addNotes(headline)];
             case 1:
                 _a.sent();
                 noteInput.value = "";
@@ -110,7 +110,7 @@ function showAllNotes() {
                     notesList.innerHTML = "";
                     for (i = 0; i < notes.length; i++) {
                         note = notes[i];
-                        notesList.innerHTML += "\n                <li data-id=\"".concat(note.id, "\">\n                    <span>").concat(note.text, "</span>\n                    <div>\n                        <button onclick='deleteNote(\"").concat(note.id, "\")' class=\"delete-btn\">Delete</button>\n                    </div>\n                </li>\n            ");
+                        notesList.innerHTML += "\n                <li data-id=\"".concat(note.id, "\">\n                    <span>").concat(note.headline, "</span>\n                    <div>\n                        <button onclick='openModal(\"").concat(note.id, "\")' class=\"edit-btn\" style=\"background-color: #ffc107; color: black;\">Edit/Show</button>\n                        <button onclick='deleteNote(\"").concat(note.id, "\")' class=\"delete-btn\">Delete</button>\n                    </div>\n                </li>\n            ");
                     }
                     return [3 /*break*/, 4];
                 case 3:
@@ -142,10 +142,10 @@ function deleteNote(id) {
 }
 noteInput.addEventListener("keyup", function (event) {
     if (event.key == "Enter") {
-        var text = noteInput.value.trim();
-        if (!text)
+        var headline_1 = noteInput.value.trim();
+        if (!headline_1)
             return;
-        addNotes(text);
+        addNotes(headline_1);
         noteInput.value = "";
         showAllNotes();
     }
@@ -175,4 +175,100 @@ darkModeBtn.addEventListener("click", function () {
         darkModeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
     }
 });
+// Modal Logic
+var modal = document.getElementById("noteModal");
+var closeModalBtn = document.getElementById("closeModalBtn");
+var modalHeadline = document.getElementById("modalHeadline");
+var modalNoteText = document.getElementById("modalNoteText");
+var editNoteBtn = document.getElementById("editNoteBtn");
+var saveNoteBtn = document.getElementById("saveNoteBtn");
+var currentNoteId = null;
+window.openModal = function (id) {
+    return __awaiter(this, void 0, void 0, function () {
+        var response, notes, note, error_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    currentNoteId = id;
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 4, , 5]);
+                    return [4 /*yield*/, fetch("".concat(url))];
+                case 2:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 3:
+                    notes = _a.sent();
+                    note = notes.find(function (n) { return n.id === id; });
+                    if (note) {
+                        modalHeadline.value = note.headline;
+                        modalNoteText.value = note.text || "";
+                        modal.style.display = "block";
+                        modalHeadline.readOnly = true;
+                        modalNoteText.readOnly = true;
+                        editNoteBtn.style.display = "inline-block";
+                        saveNoteBtn.style.display = "none";
+                    }
+                    return [3 /*break*/, 5];
+                case 4:
+                    error_2 = _a.sent();
+                    console.error("Error fetching note details:", error_2);
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
+            }
+        });
+    });
+};
+closeModalBtn.onclick = function () {
+    modal.style.display = "none";
+};
+window.onclick = function (event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+};
+editNoteBtn.onclick = function () {
+    modalHeadline.readOnly = false;
+    modalNoteText.readOnly = false;
+    modalNoteText.focus();
+    editNoteBtn.style.display = "none";
+    saveNoteBtn.style.display = "inline-block";
+};
+saveNoteBtn.onclick = function () {
+    return __awaiter(this, void 0, void 0, function () {
+        var newHeadline, newText, error_3;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!currentNoteId) return [3 /*break*/, 5];
+                    newHeadline = modalHeadline.value.trim();
+                    newText = modalNoteText.value.trim();
+                    if (!newHeadline)
+                        return [2 /*return*/];
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 4, , 5]);
+                    return [4 /*yield*/, fetch("".concat(url, "/").concat(currentNoteId), {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ headline: newHeadline, text: newText }),
+                        })];
+                case 2:
+                    _a.sent();
+                    modal.style.display = "none";
+                    return [4 /*yield*/, showAllNotes()];
+                case 3:
+                    _a.sent();
+                    return [3 /*break*/, 5];
+                case 4:
+                    error_3 = _a.sent();
+                    console.error("Error updating note:", error_3);
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
+            }
+        });
+    });
+};
 showAllNotes();
