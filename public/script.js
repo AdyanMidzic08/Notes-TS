@@ -112,6 +112,9 @@ function showAllNotes() {
                         note = notes[i];
                         notesList.innerHTML += "\n                <li data-id=\"".concat(note.id, "\">\n                    <span>").concat(note.headline, "</span>\n                    <div>\n                        <button onclick='openModal(\"").concat(note.id, "\")' class=\"edit-btn\" style=\"background-color: #ffc107; color: black;\">Edit/Show</button>\n                        <button onclick='deleteNote(\"").concat(note.id, "\")' class=\"delete-btn\">Delete</button>\n                    </div>\n                </li>\n            ");
                     }
+                    if (document.body.classList.contains("dark-mode")) {
+                        applyDarkMode(true);
+                    }
                     return [3 /*break*/, 4];
                 case 3:
                     error_1 = _a.sent();
@@ -150,9 +153,9 @@ noteInput.addEventListener("keyup", function (event) {
         showAllNotes();
     }
 });
-darkModeBtn.addEventListener("click", function () {
-    var isDark = document.body.classList.toggle("dark-mode");
+function applyDarkMode(isDark) {
     if (isDark) {
+        document.body.classList.add("dark-mode");
         headline.style.color = "white";
         notesList.style.color = "white";
         noteInput.style.backgroundColor = "black";
@@ -164,6 +167,7 @@ darkModeBtn.addEventListener("click", function () {
         darkModeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
     }
     else {
+        document.body.classList.remove("dark-mode");
         notesList.style.color = "black";
         headline.style.color = "black";
         noteInput.style.backgroundColor = "white";
@@ -174,14 +178,23 @@ darkModeBtn.addEventListener("click", function () {
         });
         darkModeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
     }
+    localStorage.setItem("darkMode", isDark.toString());
+}
+darkModeBtn.addEventListener("click", function () {
+    var isDark = !document.body.classList.contains("dark-mode");
+    applyDarkMode(isDark);
 });
-// Modal Logic
+if (localStorage.getItem("darkMode") === "true") {
+    applyDarkMode(true);
+}
 var modal = document.getElementById("noteModal");
+var modalContent = document.querySelector(".modal-content");
 var closeModalBtn = document.getElementById("closeModalBtn");
 var modalHeadline = document.getElementById("modalHeadline");
 var modalNoteText = document.getElementById("modalNoteText");
 var editNoteBtn = document.getElementById("editNoteBtn");
 var saveNoteBtn = document.getElementById("saveNoteBtn");
+var noteModalHeadline = document.getElementById("noteModalHeadline");
 var currentNoteId = null;
 window.openModal = function (id) {
     return __awaiter(this, void 0, void 0, function () {
@@ -200,6 +213,24 @@ window.openModal = function (id) {
                 case 3:
                     notes = _a.sent();
                     note = notes.find(function (n) { return n.id === id; });
+                    if (darkModeBtn.innerHTML.includes("fa-sun")) {
+                        modal.style.backgroundColor = "#121212";
+                        modalContent.style.backgroundColor = "black";
+                        modalHeadline.style.backgroundColor = "#121212";
+                        modalHeadline.style.color = "white";
+                        modalNoteText.style.backgroundColor = "#121212";
+                        modalNoteText.style.color = "white";
+                        noteModalHeadline.style.color = "white";
+                    }
+                    else {
+                        modal.style.backgroundColor = "";
+                        modalContent.style.backgroundColor = "white";
+                        modalHeadline.style.backgroundColor = "white";
+                        modalHeadline.style.color = "black";
+                        modalNoteText.style.backgroundColor = "white";
+                        modalNoteText.style.color = "black";
+                        noteModalHeadline.style.color = "grey";
+                    }
                     if (note) {
                         modalHeadline.value = note.headline;
                         modalNoteText.value = note.text || "";

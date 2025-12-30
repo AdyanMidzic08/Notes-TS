@@ -57,6 +57,10 @@ async function showAllNotes() {
                 </li>
             `;
     }
+
+    if (document.body.classList.contains("dark-mode")) {
+      applyDarkMode(true);
+    }
   } catch (error) {
     console.error(error);
   }
@@ -80,10 +84,9 @@ noteInput.addEventListener("keyup", function (event) {
   }
 });
 
-darkModeBtn.addEventListener("click", function () {
-  let isDark = document.body.classList.toggle("dark-mode");
-
+function applyDarkMode(isDark: boolean) {
   if (isDark) {
+    document.body.classList.add("dark-mode");
     headline.style.color = "white";
     notesList.style.color = "white";
 
@@ -98,6 +101,7 @@ darkModeBtn.addEventListener("click", function () {
 
     darkModeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
   } else {
+    document.body.classList.remove("dark-mode");
     notesList.style.color = "black";
     headline.style.color = "black";
 
@@ -112,18 +116,26 @@ darkModeBtn.addEventListener("click", function () {
 
     darkModeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
   }
+  localStorage.setItem("darkMode", isDark.toString());
+}
+
+darkModeBtn.addEventListener("click", function () {
+  let isDark = !document.body.classList.contains("dark-mode");
+  applyDarkMode(isDark);
 });
 
+if (localStorage.getItem("darkMode") === "true") {
+  applyDarkMode(true);
+}
+
 let modal = document.getElementById("noteModal") as HTMLDivElement;
+let modalContent = document.querySelector(".modal-content") as HTMLDivElement;
 let closeModalBtn = document.getElementById("closeModalBtn") as HTMLSpanElement;
-let modalHeadline = document.getElementById(
-  "modalHeadline"
-) as HTMLInputElement;
-let modalNoteText = document.getElementById(
-  "modalNoteText"
-) as HTMLTextAreaElement;
+let modalHeadline = document.getElementById("modalHeadline") as HTMLInputElement;
+let modalNoteText = document.getElementById("modalNoteText") as HTMLTextAreaElement;
 let editNoteBtn = document.getElementById("editNoteBtn") as HTMLButtonElement;
 let saveNoteBtn = document.getElementById("saveNoteBtn") as HTMLButtonElement;
+let noteModalHeadline = document.getElementById("noteModalHeadline") as HTMLHeadingElement;
 let currentNoteId: string | null = null;
 
 (window as any).openModal = async function (id: string) {
@@ -132,6 +144,24 @@ let currentNoteId: string | null = null;
     let response = await fetch(`${url}`);
     let notes = await response.json();
     let note = notes.find((n: any) => n.id === id);
+
+    if (darkModeBtn.innerHTML.includes("fa-sun")) {
+      modal.style.backgroundColor = "#121212";
+      modalContent.style.backgroundColor = "black";
+      modalHeadline.style.backgroundColor = "#121212";
+      modalHeadline.style.color = "white";
+      modalNoteText.style.backgroundColor = "#121212";
+      modalNoteText.style.color = "white";
+      noteModalHeadline.style.color = "white";
+    } else {
+      modal.style.backgroundColor = "";
+      modalContent.style.backgroundColor = "white";
+      modalHeadline.style.backgroundColor = "white";
+      modalHeadline.style.color = "black";
+      modalNoteText.style.backgroundColor = "white";
+      modalNoteText.style.color = "black";
+      noteModalHeadline.style.color = "grey";
+    }
 
     if (note) {
       modalHeadline.value = note.headline;

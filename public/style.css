@@ -204,6 +204,11 @@ li button:last-of-type:hover {
   cursor: pointer;
 }
 
+.dark-mode .close-btn:hover,
+.dark-mode .close-btn:focus {
+  color: white;
+}
+
 #modalNoteText {
     width: 100%;
     height: 150px;
