@@ -2,7 +2,7 @@
 
 Eine einfache Notizen-App, entwickelt mit TypeScript, Express und einem Vanilla-Frontend.
 
-## 🚀 Features
+##  Features
 
 - **Notizen erstellen**: Füge schnell neue Notizen hinzu.
 - **Notizen löschen**: Entferne erledigte oder nicht mehr benötigte Notizen.
@@ -10,18 +10,18 @@ Eine einfache Notizen-App, entwickelt mit TypeScript, Express und einem Vanilla-
 - **Responsive Design**: Optimiert für Desktop und mobile Geräte.
 - **REST API**: Backend-Logik über eine RESTful API.
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - **Backend**: Node.js, Express, TypeScript
 - **Frontend**: HTML, CSS, JavaScript
 - **Tools**: `ts-node-dev` für Hot-Reloading, `uuid` für eindeutige IDs.
 
-## 📦 Installation & Setup
+##  Installation & Setup
 
 1. **Repository klonen**
 
    ```bash
-   git clone <DEIN_REPO_URL>
+   git clone <https://github.com/AdyanMidzic08/Notes-TS>
    cd Notes-TS-API
    ```
 
@@ -44,7 +44,7 @@ Eine einfache Notizen-App, entwickelt mit TypeScript, Express und einem Vanilla-
    npm start
    ```
 
-## 📡 API Endpoints
+##  API Endpoints
 
 | Methode  | Pfad         | Beschreibung                        | Body (JSON)                 |
 | :------- | :----------- | :---------------------------------- | :-------------------------- |
@@ -52,7 +52,7 @@ Eine einfache Notizen-App, entwickelt mit TypeScript, Express und einem Vanilla-
 | `POST`   | `/notes`     | Erstellt eine neue Notiz.           | `{ "text": "Meine Notiz" }` |
 | `DELETE` | `/notes/:id` | Löscht eine Notiz anhand ihrer ID.  | -                           |
 
-## 📂 Projektstruktur
+## Projektstruktur
 
 ```
 Notes-TS-API/
@@ -68,6 +68,6 @@ Notes-TS-API/
 └── README.md         # Dokumentation
 ```
 
-## 📝 Lizenz
+##  Lizenz
 
 Dieses Projekt ist unter der ISC Lizenz lizenziert.
